@@ -18,5 +18,11 @@ namespace Soluction4Fleet.API.Infrastructure.Repositories
         {
             return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<Usuario> BuscaPorId(Guid id)
+        {
+            return await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == id);
+        }
+
     }
 }

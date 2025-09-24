@@ -21,5 +21,11 @@ namespace Soluction4Fleet.API.Application.Services
             return await _usuarioRepository.ObterPorEmailAsync(email);
             //return _mapper.Map<UsuarioDTO>(usuario);
         }
+
+        public async Task<Usuario> BuscaPorId(Guid id)
+        {
+            return await _usuarioRepository.BuscaPorId(id);
+            //return _mapper.Map<UsuarioDTO>(usuario);
+        }
     }
 }

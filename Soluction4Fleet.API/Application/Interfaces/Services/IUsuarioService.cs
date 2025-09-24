@@ -6,5 +6,6 @@ namespace Soluction4Fleet.API.Application.Interfaces.Services
     public interface IUsuarioService
     {
         Task<Usuario> ObterPorEmailAsync(string email);
+        Task<Usuario> BuscaPorId(Guid id);
     }
 }

@@ -5,5 +5,7 @@ namespace Soluction4Fleet.API.Application.Interfaces.Repository
     public interface IUsuarioRepository
     {
         Task<Usuario> ObterPorEmailAsync(string email);
+
+        Task<Usuario> BuscaPorId(Guid id);
     }
 }
