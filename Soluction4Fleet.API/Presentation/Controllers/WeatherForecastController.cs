@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Soluction4Fleet.API.Controllers
+namespace Soluction4Fleet.API.Presentation.Controllers
 {
     [ApiController]
     [Route("[controller]")]
