@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Soluction4Fleet.API.Domain.Data;
 using Soluction4Fleet.API.Presentation.Extensions;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -139,4 +140,9 @@ app.UseAuthorization();
 //app.UseSerilogRequestLogging();
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<Soluction4FleetContext>();
+    db.Database.Migrate();
+}
 app.Run();
