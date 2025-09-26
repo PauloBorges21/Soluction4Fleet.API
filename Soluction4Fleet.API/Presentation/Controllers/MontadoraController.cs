@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Soluction4Fleet.API.Application.DTOs.Montadora;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Services;
 using Soluction4Fleet.API.Domain.Entities;
 
 namespace Soluction4Fleet.API.Presentation.Controllers
@@ -22,6 +23,20 @@ namespace Soluction4Fleet.API.Presentation.Controllers
         {
             var montadoraDba = await _montadoraService.GetAllMontadorasAsync();
             return Ok(montadoraDba);
+        }
+
+        [HttpGet("{id}/busca-por-id")]
+        public async Task<IActionResult> GetMontadoraByIdAsync(Guid id)
+        {
+            var montadoraDBA = await _montadoraService.GetMontadoraByIdAsync(id);
+            if (montadoraDBA != null)
+            {
+                return Ok(montadoraDBA);
+            }
+            else
+            {
+                return NotFound($"Locadora não foi encontrado.");
+            }
         }
 
         [HttpPost]

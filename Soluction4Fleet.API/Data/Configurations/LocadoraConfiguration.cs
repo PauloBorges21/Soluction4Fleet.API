@@ -35,7 +35,12 @@ namespace Soluction4Fleet.API.Data.Configurations
             builder.Property(m => m.Ativo)
                    .HasDefaultValue(true);
 
-            // 🔹 Usando OwnsOne para mapear o endereço
+            builder.HasMany(l => l.FrotaLocadoras)
+                   .WithOne(fl => fl.Locadora)
+                   .HasForeignKey(fl => fl.LocadoraId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            // Usando OwnsOne para mapear o endereço
             builder.OwnsOne(l => l.Endereco, endereco =>
             {
                 endereco.Property(e => e.Cep).HasMaxLength(9);

@@ -21,6 +21,8 @@ namespace Soluction4Fleet.API.Presentation.Extensions
             services.AddScoped<IMontadoraRepository, MontadoraRepository>();
             services.AddScoped<ILocadoraService, LocadoraService>();
             services.AddScoped<ILocadoraRepository, LocadoraRepository>();
+            services.AddScoped<IVeiculoService, VeiculoService>();
+            services.AddScoped<IVeiculoRepository, VeiculoRepository>();
             services.AddSingleton<ICombProvider>(Provider.Sql);
             // Configura AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

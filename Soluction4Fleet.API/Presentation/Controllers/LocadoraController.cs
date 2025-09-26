@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Soluction4Fleet.API.Application.DTOs.Locadora;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Domain.Entities;
 
 
 namespace Soluction4Fleet.API.Presentation.Controllers
@@ -14,12 +15,26 @@ namespace Soluction4Fleet.API.Presentation.Controllers
         {
             _locadoraService = locadoraService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             var locadoraDba = await _locadoraService.GetAllLocadorasAsync();
             return Ok(locadoraDba);
+        }
+
+        [HttpGet("{id}/busca-por-id")]
+        public async Task<IActionResult> GetLocadoraByIdAsync(Guid id)
+        {
+            var locadoraDba = await _locadoraService.GetLocadoraByIdAsync(id);
+            if (locadoraDba != null)
+            {
+                return Ok(locadoraDba);
+            }
+            else
+            {
+                return NotFound($"Locadora não foi encontrado.");
+            }
         }
 
         [HttpPost]
@@ -34,39 +49,39 @@ namespace Soluction4Fleet.API.Presentation.Controllers
 
         }
 
-        //[HttpPut("{locadoraId}")]
-        //public async Task<IActionResult> Update(Guid locadoraId, [FromBody] UpdateLocadoraDTO updateLocadoraDTO)
-        //{
+        [HttpPut("{locadoraId}")]
+        public async Task<IActionResult> Update(Guid locadoraId, [FromBody] UpdateLocadoraDTO updateLocadoraDTO)
+        {
 
-        //    if (updateLocadoraDTO == null)
-        //    {
-        //        return BadRequest("O objeto não pode ser nulo.");
-        //    }
+            if (updateLocadoraDTO == null)
+            {
+                return BadRequest("O objeto não pode ser nulo.");
+            }
 
-        //    var existelocadora = await _locadoraService.GetLocadoraByIdAsync(locadoraId);
+            var existelocadora = await _locadoraService.GetLocadoraByIdAsync(locadoraId);
 
-        //    if (existelocadora == null)
-        //    {
-        //        return NotFound("Não encontrado");
-        //    }
+            if (existelocadora == null)
+            {
+                return NotFound("Não encontrado");
+            }
 
-        //    await _locadoraService.UpdadeLocadoraAsync(locadoraId, updateLocadoraDTO);
+            await _locadoraService.UpdadeLocadoraAsync(locadoraId, updateLocadoraDTO);
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
-        //[HttpDelete("{locadoraId}")]
-        //public async Task<IActionResult> Delete(Guid locadoraId)
-        //{
-        //    var existelocadora = await _locadoraService.GetLocadoraByIdAsync(locadoraId);
-        //    if (existelocadora == null)
-        //    {
-        //        return NotFound("Não encontrado");
-        //    }
-        //    await _locadoraService.DeletelocadoraAsync(locadoraId);
+        [HttpDelete("{locadoraId}")]
+        public async Task<IActionResult> Delete(Guid locadoraId)
+        {
+            var existelocadora = await _locadoraService.GetLocadoraByIdAsync(locadoraId);
+            if (existelocadora == null)
+            {
+                return NotFound("Não encontrado");
+            }
+            await _locadoraService.DeleteLocadoraAsync(locadoraId);
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
 
     }

@@ -58,5 +58,31 @@ namespace Soluction4Fleet.API.Infrastructure.Repositories
             }
         }
 
+        public async Task<Locadora> UpdadeLocadoraAsync(Locadora locadora)
+        {
+            _context.Locadoras.Update(locadora);
+            await _context.SaveChangesAsync();
+            return locadora;
+        }
+
+        public async Task<bool> DeleteLocadoraAsync(Guid locadoraId)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var locadora = await _context.Locadoras.FindAsync(locadoraId);
+                locadora.Ativo = false;
+
+                _context.Locadoras.Update(locadora);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

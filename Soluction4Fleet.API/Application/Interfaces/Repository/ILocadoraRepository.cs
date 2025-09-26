@@ -7,5 +7,7 @@ namespace Soluction4Fleet.API.Application.Interfaces.Repository
         Task<Locadora> InsertLocadoraAsync(Locadora locadora);
         Task<List<Locadora>> GetAllLocadorasAsync();
         Task<Locadora> GetLocadoraByIdAsync(Guid locadoraId);
+        Task<Locadora> UpdadeLocadoraAsync(Locadora locadora);
+        Task<bool> DeleteLocadoraAsync(Guid locadoraId);
     }
 }

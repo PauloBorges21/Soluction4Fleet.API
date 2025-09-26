@@ -5,6 +5,7 @@ using Soluction4Fleet.API.Application.DTOs.Montadora;
 using Soluction4Fleet.API.Application.Interfaces.Repository;
 using Soluction4Fleet.API.Application.Interfaces.Services;
 using Soluction4Fleet.API.Domain.Entities;
+using Soluction4Fleet.API.Infrastructure.Repositories;
 using System.Runtime.CompilerServices;
 
 namespace Soluction4Fleet.API.Application.Services
@@ -57,6 +58,36 @@ namespace Soluction4Fleet.API.Application.Services
             }
         }
 
+        public async Task<LocadoraDTO> UpdadeLocadoraAsync(Guid locadoraId, UpdateLocadoraDTO updateLocadoraDTO)
+        {
+            try
+            {
+                var locadoraDBA = await _locadoraRepository.GetLocadoraByIdAsync(locadoraId);
+                UpdadeLocadoraObj(locadoraDBA, updateLocadoraDTO);
+
+                await _locadoraRepository.UpdadeLocadoraAsync(locadoraDBA);
+                return _mapper.Map<LocadoraDTO>(locadoraDBA);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public async Task<bool> DeleteLocadoraAsync(Guid locadoraId)
+        {
+            try
+            {
+                return await _locadoraRepository.DeleteLocadoraAsync(locadoraId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         private Locadora CriaLocadoraObj(CreateLocadoraDTO locadoraDTO)
         {
 
@@ -81,6 +112,21 @@ namespace Soluction4Fleet.API.Application.Services
             };
 
             return (locadoraDba);
+        }
+
+        private void UpdadeLocadoraObj(Locadora locadora, UpdateLocadoraDTO dto)
+        {
+            locadora.NomeFantasia = dto.NomeFantasia ?? locadora.NomeFantasia;
+            locadora.RazaoSocial = dto.RazaoSocial ?? locadora.RazaoSocial;
+            //locadora.Cnpj = dto.Cnpj ?? locadora.Cnpj;
+            locadora.Email = dto.Email ?? locadora.Email;
+            locadora.Telefone = dto.Telefone ?? locadora.Telefone;
+            locadora.Endereco.Cep = dto.Cep ?? locadora.Endereco.Cep;
+            locadora.Endereco.Rua = dto.Rua ?? locadora.Endereco.Rua;
+            locadora.Endereco.Numero = dto.Numero ?? locadora.Endereco.Numero;
+            locadora.Endereco.Bairro = dto.Bairro ?? locadora.Endereco.Bairro;
+            locadora.Endereco.Estado = dto.Estado ?? locadora.Endereco.Estado;
+            locadora.Endereco.Cidade = dto.Cidade ?? locadora.Endereco.Cidade;
         }
     }
 }

@@ -56,7 +56,11 @@ namespace Soluction4Fleet.API.Data.Configurations
                    .HasForeignKey(v => v.ModeloId)
                    .OnDelete(DeleteBehavior.Restrict);
 
-
+            // 🔹 Relacionamento com FrotaLocadora (Histórico de Locadoras)
+            builder.HasMany(v => v.FrotaLocadoras)
+                   .WithOne(f => f.Veiculo)
+                   .HasForeignKey(f => f.VeiculoId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

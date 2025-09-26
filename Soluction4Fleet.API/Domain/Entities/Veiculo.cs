@@ -14,5 +14,6 @@
         public bool Ativo { get; set; } = true;
         public Guid ModeloId { get; set; }
         public Modelo Modelo { get; set; } = null!;
+        public ICollection<FrotaLocadora> FrotaLocadoras { get; set; }
     }
 }
