@@ -60,7 +60,7 @@ O desafio aborda conceitos de **relacionamento entre entidades**, **restrição 
 
 ### 2. Configuração do Banco
 - Criar um banco no **SQL Server**
-- Executar os scripts de criação das tabelas (em `./database`)
+- Importar o arquivo script.sql que esta na pasta(Data)
 
 ### 3. Backend
 ```bash
