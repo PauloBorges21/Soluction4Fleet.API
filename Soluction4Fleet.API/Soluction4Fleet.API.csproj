@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\DTOs\Locadora\" />
     <Folder Include="Application\DTOs\Modelo\" />
     <Folder Include="Application\DTOs\Veiculo\" />
   </ItemGroup>

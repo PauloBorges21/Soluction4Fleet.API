@@ -22,10 +22,10 @@ namespace Soluction4Fleet.API.Application.Services
             //return _mapper.Map<UsuarioDTO>(usuario);
         }
 
-        public async Task<Usuario> BuscaPorId(Guid id)
+        public async Task<UsuarioDTO> BuscaPorId(Guid id)
         {
-            return await _usuarioRepository.BuscaPorId(id);
-            //return _mapper.Map<UsuarioDTO>(usuario);
+             var usuario = await _usuarioRepository.BuscaPorId(id);
+            return _mapper.Map<UsuarioDTO>(usuario);
         }
     }
 }

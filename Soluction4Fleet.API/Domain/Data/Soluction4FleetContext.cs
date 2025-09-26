@@ -11,7 +11,7 @@ namespace Soluction4Fleet.API.Domain.Data
         }
 
         public DbSet<Veiculo> Veiculos { get; set; } = null!;
-        public DbSet<Endereco> Enderecos { get; set; } = null!;
+        //public DbSet<Endereco> Enderecos { get; set; } = null!;
         public DbSet<Montadora> Montadoras { get; set; } = null!;
         public DbSet<Locadora> Locadoras { get; set; } = null!;
         //public DbSet<FrotaLocadora> FrotaLocadoras { get; set; } = null!;
