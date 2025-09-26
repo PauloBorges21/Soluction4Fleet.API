@@ -83,6 +83,5 @@ namespace Soluction4Fleet.API.Presentation.Controllers
             return NoContent();
         }
 
-
     }
 }

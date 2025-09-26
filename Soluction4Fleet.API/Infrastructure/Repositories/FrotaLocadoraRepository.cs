@@ -5,51 +5,52 @@ using Soluction4Fleet.API.Domain.Entities;
 
 namespace Soluction4Fleet.API.Infrastructure.Repositories
 {
-    public class VeiculoRepository : IVeiculoRepository
+    public class FrotaLocadoraRepository : IFrotaLocadoraRepository
     {
         private readonly Soluction4FleetContext _context;
-        public VeiculoRepository(Soluction4FleetContext context)
+
+        public FrotaLocadoraRepository(Soluction4FleetContext context)
         {
             _context = context;
         }
 
-        public async Task<List<Veiculo>> GetAllVeiculosAsync()
+        public async Task<List<FrotaLocadora>> GetVeiculosByIdAsync(Guid veiculoId)
         {
+
             try
             {
-                return await _context.Veiculos.ToListAsync();
+                return await _context.FrotaLocadoras
+                .Where(m => m.VeiculoId == veiculoId)
+                .Include(v => v.Veiculo)
+                .Include(l => l.Locadora)
+                .ToListAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var erroCompleto = $"{ex.Message} | Inner: {ex.InnerException?.Message}";
                 throw;
             }
         }
 
-        public async Task<Veiculo> GetVeiculoByIdAsync(Guid veiculoId)
+        public async Task<FrotaLocadora> UpdateVeiculoAsync(FrotaLocadora veiculo)
         {
-            try
-            {
-                return await _context.Veiculos.SingleAsync(m => m.Id == veiculoId);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            _context.FrotaLocadoras.Update(veiculo);
+            await _context.SaveChangesAsync();
+            return veiculo;
         }
 
-        public async Task<(Veiculo, FrotaLocadora)> InsertVeiculoFrotaAsync(Veiculo veiculo, FrotaLocadora frotaLocadora)
+        public async Task<FrotaLocadora> TransferirVeiculoAsync(FrotaLocadora frotaLocadora)
         {
             await using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
             {
-                await _context.Veiculos.AddAsync(veiculo);
                 await _context.FrotaLocadoras.AddAsync(frotaLocadora);
 
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
-                return (veiculo, frotaLocadora);
+                return frotaLocadora;
             }
             catch (Exception ex)
             {

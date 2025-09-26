@@ -23,6 +23,10 @@ namespace Soluction4Fleet.API.Presentation.Extensions
             services.AddScoped<ILocadoraRepository, LocadoraRepository>();
             services.AddScoped<IVeiculoService, VeiculoService>();
             services.AddScoped<IVeiculoRepository, VeiculoRepository>();
+            services.AddScoped<IModeloService, ModeloService>();
+            services.AddScoped<IModeloRepository, ModeloRepository>();
+            services.AddScoped<IFrotaLocadoraService, FrotaLocadoraService>();
+            services.AddScoped<IFrotaLocadoraRepository, FrotaLocadoraRepository>();
             services.AddSingleton<ICombProvider>(Provider.Sql);
             // Configura AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
