@@ -2,6 +2,8 @@
 using Soluction4Fleet.API.Application.DTOs.FrotaLocadora;
 using Soluction4Fleet.API.Application.DTOs.Veiculo;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Responses;
+using Soluction4Fleet.API.Domain.Entities;
 
 
 namespace Soluction4Fleet.API.Presentation.Controllers
@@ -21,21 +23,21 @@ namespace Soluction4Fleet.API.Presentation.Controllers
         public async Task<IActionResult> Get()
         {
             var veiculoDba = await _veiculoService.GetAllVeiculosAsync();
-            return Ok(veiculoDba);
+            if (veiculoDba == null)
+                return NotFound(new ApiResponse<string>(null, "Não encontrado", false));
+
+            return Ok(new ApiResponse<List<VeiculoDTO>>(veiculoDba, "Encontrado com sucesso"));
+
         }
-               
+
         [HttpGet("{id}/busca-por-id")]
         public async Task<IActionResult> GetVeiculoByIdAsync(Guid id)
         {
             var veiculoDba = await _veiculoService.GetVeiculoByIdAsync(id);
-            if (veiculoDba != null)
-            {
-                return Ok(veiculoDba);
-            }
-            else
-            {
-                return NotFound($"Locadora não foi encontrado.");
-            }
+            if (veiculoDba == null)
+                return NotFound(new ApiResponse<string>(null, "Não encontrado", false));
+
+            return Ok(new ApiResponse<VeiculoDTO>(veiculoDba, "Encontrado com sucesso"));
         }
 
 
@@ -47,8 +49,12 @@ namespace Soluction4Fleet.API.Presentation.Controllers
                 return BadRequest("locadora data is null.");
             }
             var veiculoDba = await _veiculoService.InsertVeiculoFrotaAsync(veiculoDTO);
-            return Ok(veiculoDba);
 
+            if (veiculoDba == null)
+                return StatusCode(500, new ApiResponse<string>(null, "Erro ao criar veículo", false));
+
+            return CreatedAtAction(nameof(GetVeiculoByIdAsync), new { id = veiculoDba.Id },
+            new ApiResponse<VeiculoDTO>(veiculoDba, "Veículo criado com sucesso"));
         }
 
 
@@ -63,7 +69,11 @@ namespace Soluction4Fleet.API.Presentation.Controllers
             if (veiculoAtualizado == null)
                 return NotFound("Veículo não encontrado.");
 
-            return Ok(veiculoAtualizado);
+            if (veiculoAtualizado == null)
+                return NotFound(new ApiResponse<string>(null, "Não encontrado", false));
+
+            //return Ok(new ApiResponse<VeiculoDTO>(veiculoAtualizado, "Encontrado com sucesso"));
+            return NoContent(); // 204        
         }
 
         [HttpPost("transferencia")]
@@ -74,7 +84,11 @@ namespace Soluction4Fleet.API.Presentation.Controllers
                 return BadRequest("locadora data is null.");
             }
             var veiculoDba = await _veiculoService.TransferirVeiculoAsync(veiculoDTO);
-            return Ok(veiculoDba);
+
+            if (veiculoDba == null)
+                return StatusCode(500, new ApiResponse<string>(null, "Erro na transferencia do veículo", false));
+
+            return Ok(new ApiResponse<VeiculoDTO>(veiculoDba, "Veículo Transferido"));
 
         }
     }

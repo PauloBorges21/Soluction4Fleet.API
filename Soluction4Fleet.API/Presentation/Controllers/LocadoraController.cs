@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Soluction4Fleet.API.Application.DTOs.Locadora;
+using Soluction4Fleet.API.Application.DTOs.Veiculo;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Responses;
 using Soluction4Fleet.API.Domain.Entities;
 
 
@@ -20,21 +22,19 @@ namespace Soluction4Fleet.API.Presentation.Controllers
         public async Task<IActionResult> Get()
         {
             var locadoraDba = await _locadoraService.GetAllLocadorasAsync();
-            return Ok(locadoraDba);
+            if (locadoraDba == null)
+                return NotFound(new ApiResponse<string>(null, "Nenhuma locadora encontrada.", false));
+
+            return Ok(new ApiResponse<List<LocadoraDTO>>(locadoraDba, "Locadora encontrada"));
         }
 
         [HttpGet("{id}/busca-por-id")]
         public async Task<IActionResult> GetLocadoraByIdAsync(Guid id)
         {
             var locadoraDba = await _locadoraService.GetLocadoraByIdAsync(id);
-            if (locadoraDba != null)
-            {
-                return Ok(locadoraDba);
-            }
-            else
-            {
-                return NotFound($"Locadora não foi encontrado.");
-            }
+            if (locadoraDba == null)
+                return NotFound(new ApiResponse<string>(null, "Nenhuma locadora encontrada.", false));
+            return Ok(new ApiResponse<LocadoraDTO>(locadoraDba, "Locadora encontrada"));
         }
 
         [HttpPost]
@@ -45,7 +45,11 @@ namespace Soluction4Fleet.API.Presentation.Controllers
                 return BadRequest("locadora data is null.");
             }
             var locadoraDba = await _locadoraService.InsertLocadoraAsync(locadoraDTO);
-            return Ok(locadoraDba);
+
+            if (locadoraDba == null)
+                return BadRequest(new ApiResponse<string>(null, "Erro ao criar locadora", false));
+
+            return Ok(new ApiResponse<LocadoraDTO>(locadoraDba, "Locadora criado com sucesso"));
 
         }
 

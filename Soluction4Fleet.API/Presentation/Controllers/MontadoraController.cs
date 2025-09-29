@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Soluction4Fleet.API.Application.DTOs.Montadora;
+using Soluction4Fleet.API.Application.DTOs.Veiculo;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Responses;
 using Soluction4Fleet.API.Application.Services;
 using Soluction4Fleet.API.Domain.Entities;
 
@@ -47,8 +49,12 @@ namespace Soluction4Fleet.API.Presentation.Controllers
                 return BadRequest("Montadora data is null.");
             }
             var montadoraDba = await _montadoraService.InsertMontadoraAsync(montadoraDTO);
-            return Ok(montadoraDba);
 
+            if (montadoraDba == null)
+                return NotFound(new ApiResponse<string>(null, "Não encontrado", false));
+
+            return Ok(new ApiResponse<List<MontadoraDTO>>(montadoraDba, "Encontrado com sucesso"));
+            
         }
 
         [HttpPut("{montadoraId}")]

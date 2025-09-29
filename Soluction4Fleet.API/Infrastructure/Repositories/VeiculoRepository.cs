@@ -18,9 +18,11 @@ namespace Soluction4Fleet.API.Infrastructure.Repositories
             try
             {
                 return await _context.Veiculos
-                    .Include(Modelo => Modelo.Modelo)
-                    .ThenInclude(Montadora => Montadora.Montadora)
-                    .ToListAsync();
+                 .Include(v => v.Modelo)
+                 .ThenInclude(m => m.Montadora)
+                 .Include(v => v.FrotaLocadoras)
+                 .ThenInclude(fl => fl.Locadora)
+             .ToListAsync();
             }
             catch (Exception)
             {
@@ -33,8 +35,10 @@ namespace Soluction4Fleet.API.Infrastructure.Repositories
             try
             {
                 return await _context.Veiculos
-                     .Include(Modelo => Modelo.Modelo)
-                    .ThenInclude(Montadora => Montadora.Montadora)
+                 .Include(v => v.Modelo)
+                 .ThenInclude(m => m.Montadora)
+                 .Include(v => v.FrotaLocadoras)
+                 .ThenInclude(fl => fl.Locadora)
                     .SingleAsync(m => m.Id == veiculoId);
             }
             catch (Exception)

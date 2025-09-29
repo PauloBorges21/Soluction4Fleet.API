@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using Soluction4Fleet.API.Domain.Data;
 using Soluction4Fleet.API.Presentation.Extensions;
 using System.Text;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +29,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("CorsPolicy",
         policy => policy
             .WithOrigins(
-                "http://localhost:3000", // URL do frontend em desenvolvimento
+                "http://localhost:4200", // URL do frontend em desenvolvimento
                 "http://localhost:5181",
                 "https://localhost:7064"
               ) // URL real do frontend
@@ -42,8 +44,10 @@ builder.Services.AddCors(options =>
 // ----------------------
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-    );
+    {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.Converters.Add(new StringEnumConverter()); // ENUM -> String
+    });
 
 
 // ----------------------
