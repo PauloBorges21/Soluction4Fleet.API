@@ -24,11 +24,7 @@ packages/
 *.pdb
 *.mdb
 
-## Configurações locais ##
-*.localsettings.json
-appsettings.*.json
-appsettings.Development.json
-web.config
+
 
 ## Arquivos do Rider/JetBrains ##
 .idea/

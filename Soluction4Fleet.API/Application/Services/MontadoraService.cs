@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RT.Comb;
+using Soluction4Fleet.API.Application.DTOs;
+using Soluction4Fleet.API.Application.DTOs.Modelo;
 using Soluction4Fleet.API.Application.DTOs.Montadora;
 using Soluction4Fleet.API.Application.Interfaces.Repository;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Responses;
 using Soluction4Fleet.API.Domain.Entities;
 
 namespace Soluction4Fleet.API.Application.Services
@@ -30,16 +33,18 @@ namespace Soluction4Fleet.API.Application.Services
             return _mapper.Map<List<MontadoraDTO>>(montadorasDBA);
         }
 
-        public async Task<List<MontadoraDTO>> GetAllMontadorasAsync()
+        public async Task<ApiResponse<List<MontadoraDTO>>> GetAllMontadorasAsync()
         {
             var montadoras = await _montadoraRepository.GetAllMontadorasAsync();
-            return _mapper.Map<List<MontadoraDTO>>(montadoras);
+            var montadorasDBA = _mapper.Map<List<MontadoraDTO>>(montadoras);
+            return ApiResponseFactory.Success<List<MontadoraDTO>>(montadorasDBA, "Montadoras encontrados com sucesso!");
         }
 
-        public async Task<MontadoraDTO> GetMontadoraByIdAsync(Guid id)
+        public async Task<ApiResponse<MontadoraDTO>> GetMontadoraByIdAsync(Guid id)
         {
             var montadora = await _montadoraRepository.GetMontadoraByIdAsync(id);
-            return _mapper.Map<MontadoraDTO>(montadora);
+            var montadorasDBA = _mapper.Map<MontadoraDTO>(montadora);
+            return ApiResponseFactory.Success<MontadoraDTO>(montadorasDBA, "Montadora encontrados com sucesso!");
         }
 
         public async Task<MontadoraDTO> UpdadeMontadoraAsync(Guid montadoraId, UpdateMontadoraDTO updateMontadoraDTO)

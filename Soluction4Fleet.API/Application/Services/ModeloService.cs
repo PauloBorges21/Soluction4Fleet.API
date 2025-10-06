@@ -1,11 +1,15 @@
 ﻿using AutoMapper;
 using RT.Comb;
+using Soluction4Fleet.API.Application.DTOs;
 using Soluction4Fleet.API.Application.DTOs.Modelo;
 using Soluction4Fleet.API.Application.DTOs.Montadora;
+using Soluction4Fleet.API.Application.DTOs.Usuario;
 using Soluction4Fleet.API.Application.Interfaces.Repository;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Responses;
 using Soluction4Fleet.API.Domain.Entities;
 using Soluction4Fleet.API.Infrastructure.Repositories;
+using System.Collections.Generic;
 
 
 namespace Soluction4Fleet.API.Application.Services
@@ -22,16 +26,17 @@ namespace Soluction4Fleet.API.Application.Services
             _combProvider = combProvider;
         }
 
-        public async Task<List<ModeloDTO>> GetAllModelosAsync()
+        public async Task<ApiResponse<List<ModeloDTO>>> GetAllModelosAsync()
         {
             var modelos = await _modeloRepository.GetAllModelosAsync();
-            return _mapper.Map<List<ModeloDTO>>(modelos);
-
+            var modelosDTO = _mapper.Map<List<ModeloDTO>>(modelos);
+            return ApiResponseFactory.Success<List<ModeloDTO>>(modelosDTO, "Modelos encontrados com sucesso!");
         }
-        public async Task<ModeloDTO> GetModeloByIdAsync(Guid modeloId)
+        public async Task<ApiResponse<ModeloDTO>> GetModeloByIdAsync(Guid modeloId)
         {
             var modelo = await _modeloRepository.GetModeloByIdAsync(modeloId);
-            return _mapper.Map<ModeloDTO>(modelo);
+            var modeloDto = _mapper.Map<ModeloDTO>(modelo);
+            return ApiResponseFactory.Success<ModeloDTO>(modeloDto, "Modelo encontrado com sucesso!");
         }
 
         public async Task<ModeloDTO> InsertModeloAsync(CreateModeloDTO modeloDTO)

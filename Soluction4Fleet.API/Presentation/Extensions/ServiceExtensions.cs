@@ -5,6 +5,7 @@ using Soluction4Fleet.API.Application.Interfaces.Services;
 using Soluction4Fleet.API.Application.Services;
 using Soluction4Fleet.API.Domain;
 using Soluction4Fleet.API.Infrastructure.Repositories;
+using Soluction4Fleet.API.Infrastructure.Security;
 
 namespace Soluction4Fleet.API.Presentation.Extensions
 {
@@ -29,6 +30,7 @@ namespace Soluction4Fleet.API.Presentation.Extensions
             services.AddScoped<IFrotaLocadoraRepository, FrotaLocadoraRepository>();
             services.AddScoped<IRelatorioService, RelatorioService>();
             services.AddScoped<IRelatorioRepository, RelatorioRepository>();
+            services.AddScoped<ISecurityService, EncryptionService>();
             services.AddSingleton<ICombProvider>(Provider.Sql);
             // Configura AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

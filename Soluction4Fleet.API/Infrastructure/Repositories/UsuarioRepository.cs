@@ -16,13 +16,45 @@ namespace Soluction4Fleet.API.Infrastructure.Repositories
 
         public async Task<Usuario> ObterPorEmailAsync(string email)
         {
-            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            try
+            {
+                return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
         public async Task<Usuario> BuscaPorId(Guid id)
         {
-            return await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == id);
+            try
+            {
+                return await _context.Usuarios.SingleOrDefaultAsync(u => u.Id == id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
         }
 
+        public async Task<Usuario> InsertUsuario(Usuario usuario)
+        {
+            try
+            {
+                await _context.Usuarios.AddAsync(usuario);
+                await _context.SaveChangesAsync();
+                return usuario;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

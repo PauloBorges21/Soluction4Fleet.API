@@ -3,14 +3,14 @@
     public class LoginFleetResponse
     {
         public string Token { get; set; }
-        //public DateTime Expiracao { get; set; }
+        public Guid IdUsuario { get; set; }
         public string Email { get; set; }
         public string Perfil { get; set; }
 
-        public LoginFleetResponse(string token, string userEmail, string roles)
+        public LoginFleetResponse(string token, Guid idUsuario ,string userEmail, string roles)
         {
             Token = token;
-            //Expiracao = expiration;
+            IdUsuario = idUsuario;
             Email = userEmail;
             Perfil = roles;
         }

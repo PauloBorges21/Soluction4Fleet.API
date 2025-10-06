@@ -2,11 +2,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using Soluction4Fleet.API.Domain.Data;
+using Soluction4Fleet.API.Infrastructure.Configurations;
 using Soluction4Fleet.API.Presentation.Extensions;
 using System.Text;
 using System.Text.Json.Serialization;
-using Newtonsoft.Json.Converters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,10 @@ builder.Services.AddControllers()
 // ----------------------
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("Chave JWT não configurada");
 var key = Encoding.UTF8.GetBytes(jwtKey);
+
+builder.Services.Configure<CryptoSettings>(
+    builder.Configuration.GetSection("Crypto"));
+
 
 builder.Services.AddAuthentication(options =>
 {

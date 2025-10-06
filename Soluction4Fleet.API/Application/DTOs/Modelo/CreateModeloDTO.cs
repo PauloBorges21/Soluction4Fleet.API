@@ -2,7 +2,7 @@
 {
     public class CreateModeloDTO
     {
-        public Guid MontadoraId { get; set; }
         public string Nome { get; set; }
+        public Guid MontadoraId { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 {
     public class ModeloDTO
     {
+        public Guid Id { get; set; }
         public required string Nome { get; set; }
     }
 }

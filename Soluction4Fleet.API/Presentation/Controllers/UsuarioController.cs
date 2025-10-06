@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Soluction4Fleet.API.Application.DTOs.Usuario;
 using Soluction4Fleet.API.Application.Interfaces.Services;
+using Soluction4Fleet.API.Application.Responses;
 using Soluction4Fleet.API.Domain.Entities;
 
 namespace Soluction4Fleet.API.Presentation.Controllers
@@ -29,6 +31,28 @@ namespace Soluction4Fleet.API.Presentation.Controllers
             else
             {
                 return NotFound($"Usuário com o ID {id} não foi encontrado.");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post(CreateUsuarioDTO usuarioSistema)
+        {
+            try
+            {
+                var usuario = await _usuario.InsertUsuario(usuarioSistema);
+
+                if (usuario.Success)
+                {
+                    return Ok(usuario);
+                }
+
+                return BadRequest(usuario);
+
+            }
+            catch (Exception ex)
+            {
+                // Aqui você pode logar o erro com Serilog ou outro logger
+                return StatusCode(500, new ApiResponse<string>(null, "Ocorreu um erro interno no servidor.", false));
             }
         }
     }
